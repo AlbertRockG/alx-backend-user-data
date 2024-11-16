@@ -2,6 +2,7 @@
 """
 Route module for the API
 """
+
 from logging import exception
 from os import getenv
 from api.v1.views import app_views
@@ -22,6 +23,7 @@ if getenv("AUTH_TYPE") == "auth":
 elif getenv("AUTH_TYPE") == "basic_auth":
     auth = BasicAuth()
 
+
 @app.before_request
 def authentication_handler() -> None:
     """Auth handler
@@ -38,11 +40,13 @@ def authentication_handler() -> None:
     if not auth.current_user(request):
         abort(403)
 
+
 @app.errorhandler(404)
 def not_found(error) -> str:
     """ Not found handler
     """
     return jsonify({"error": "Not found"}), 404
+
 
 @app.errorhandler(401)
 def unauthorized(error) -> str:
@@ -55,6 +59,7 @@ def unauthorized(error) -> str:
 def forbidden(error) -> str:
     """ Forbidden Handker """
     return jsonify({"error": "Forbidden"}), 403
+
 
 if __name__ == "__main__":
     host = getenv("API_HOST", "0.0.0.0")
