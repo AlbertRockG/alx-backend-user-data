@@ -2,9 +2,9 @@
 """
 Route module for the API.
 
-This module sets up the Flask application, configures CORS, handles authentication
-based on the AUTH_TYPE environment variable, and defines error handlers and
-request processing logic for the API.
+This module sets up the Flask application, configures CORS,
+handles authentication based on the AUTH_TYPE environment variable,
+and defines error handlers and request processing logic for the API.
 """
 
 import os
@@ -16,7 +16,7 @@ from api.v1.views import app_views
 
 # Initialize the Flask application
 app = Flask(__name__)
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True  # Enable pretty-printed JSON responses
+app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
 
 # Register the blueprint containing the API views
 app.register_blueprint(app_views)
@@ -24,7 +24,6 @@ app.register_blueprint(app_views)
 # Configure Cross-Origin Resource Sharing (CORS) for the API
 CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
-# Initialize the authentication object based on the AUTH_TYPE environment variable
 auth = None
 AUTH_TYPE = getenv("AUTH_TYPE")
 
@@ -83,13 +82,15 @@ def before_request() -> None:
     """
     Execute before each request to perform authentication and authorization.
 
-    This function checks if the requested path requires authentication. If so, it verifies
-    the presence of valid authentication credentials. If authentication fails, it aborts
-    the request with the appropriate HTTP error code.
+    This function checks if the requested path requires authentication.
+    If so, it verifies the presence of valid authentication credentials.
+    If authentication fails, it aborts the request with the appropriate
+    HTTP error code.
 
     Raises:
-        401 Unauthorized: If authentication credentials are missing or invalid.
-        403 Forbidden: If the authenticated user is not authorized to access the resource.
+        401 Unauthorized: If authentication credentials missing or invalid.
+        403 Forbidden: If the authenticated user is unauthorized to access
+        the resource.
     """
     # If no authentication mechanism is set, proceed without authentication
     if auth is None:
@@ -108,7 +109,8 @@ def before_request() -> None:
         return
 
     # Retrieve the authorization header or session cookie from the request
-    if auth.authorization_header(request) is None and auth.session_cookie(request) is None:
+    if auth.authorization_header(request) is None
+    and auth.session_cookie(request) is None:
         abort(401)  # Unauthorized if no valid credentials are provided
 
     # Retrieve the current user based on the authentication credentials
