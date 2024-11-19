@@ -139,8 +139,6 @@ def main():
             f"name={data[0]}; "
             f"email={data[1]}; "
             f"phone={data[2]}; "
-      
-            
             f"ssn={data[3]}; "
             f"password={data[4]}; "
             f"ip={data[5]}; "
