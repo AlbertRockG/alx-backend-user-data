@@ -112,12 +112,18 @@ def get_db() -> mysql.connector.connection.MySQLConnection:
     host = getenv('PERSONAL_DATA_DB_HOST', 'localhost')
     db_name = getenv('PERSONAL_DATA_DB_NAME')
 
-    return msql.connector.connection.MySQLConnection(
-        user=username,
-        password=password,
-        host=host,
-        database=db_name
-    )
+    try:
+        config = {
+            'user': username,
+            'password': password,
+            'host': host,
+            'database': db_name
+        }
+        connection = msql.connector.connection.MySQLConnection(**config)
+        return connection
+    except mysql.connector.Error as err:
+        print("Error connecting to MySQL: {}".format(err))
+        raise
 
 
 def main():
